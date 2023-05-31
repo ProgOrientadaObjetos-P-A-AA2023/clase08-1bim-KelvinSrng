@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import paquete1.Jugador;
 
 public class LecturaSecuencialJugador {
@@ -19,6 +20,9 @@ public class LecturaSecuencialJugador {
     private ObjectInputStream entrada;
     private ArrayList<Jugador> jugadores;
     private String nombreArchivo;
+    private String verificador;
+    private Jugador registroBuscado;
+    
 
     public LecturaSecuencialJugador(String n) {
         nombreArchivo = n;
@@ -65,6 +69,39 @@ public class LecturaSecuencialJugador {
             }
         }
     }
+    
+    public void establecerRegistroBuscado(String cadena) {
+        // 
+        
+        File f = new File(obtenerNombreArchivo());
+        if (f.exists()) {
+
+            while (true) {
+                try {
+                    Jugador registro = (Jugador) entrada.readObject();
+                    if (registro.obtenerNombre().equals(cadena)) {
+                        registroBuscado = registro;
+                        System.out.print("Jugador existente");
+                    }
+                } catch (EOFException endOfFileException) {
+                    return; // se llegó al fin del archivo
+                    // se puede usar el break;
+                    // System.err.println("Fin de archivo: " + endOfFileException);
+
+                } catch (IOException ex) {
+                    System.err.println("Error al leer el archivo: " + ex);
+                } catch (ClassNotFoundException ex) {
+                    System.err.println("No se pudo crear el objeto: " + ex);
+                } catch (Exception ex) {
+                    System.err.println("No hay datos en el archivo: " + ex);
+
+                }
+            }
+        } else {
+            System.out.print("Jugador no existente");
+        }
+    }
+    
 
     public ArrayList<Jugador> obtenerJugadores() {
         return jugadores;
@@ -73,7 +110,27 @@ public class LecturaSecuencialJugador {
     public String obtenerNombreArchivo() {
         return nombreArchivo;
     }
-
+    
+    
+    /* public void verificarJugador(String verif){
+        
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Ingresa el nombre del jugador a buscar: ");
+        String nombre = sc.nextLine();
+        
+        String nombreArchivoClub = "data/jugadores.dat";
+        LecturaSecuencialJugador lectura
+                = new LecturaSecuencialJugador(nombreArchivoClub);
+        lectura.establecerRegistroBuscado(nombre);
+        Jugador c = lectura.obtenerRegistroBuscado();
+    }*/
+    
+    public Jugador obtenerRegistroBuscado() {
+        return registroBuscado;
+    }
+    
+    
     @Override
     public String toString() {
         String cadena = "Lista de Jugadores\n";

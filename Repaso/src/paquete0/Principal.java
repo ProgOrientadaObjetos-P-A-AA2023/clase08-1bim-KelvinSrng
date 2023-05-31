@@ -22,12 +22,13 @@ public class Principal {
         Scanner entrada = new Scanner(System.in);
         boolean bandera = true;
         while (bandera) {
-            System.out.printf("%s\n%s\n%s\n%s\n%s\n",
+            System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n",
                     "Opciones",
                     "1) Ingrese Club",
                     "2) Listar Club",
                     "3) Ingrese Jugador",
-                    "4) Listar Jugador");
+                    "4) Listar Jugador",
+                    "5) Verificar Jugador");
             int opcion = entrada.nextInt();
             if (opcion == 1) {
                 agregarClubs();
@@ -47,7 +48,14 @@ public class Principal {
                         if (opcion == 4) {
                             verJugadores();
                         }else{
-                            System.out.println("Opción incorrecta");
+                            if (opcion == 5) {
+                                
+                                verificarJugador();
+
+                                
+                            } else {
+                                System.out.println("Opción incorrecta");
+                            }
                         }
                     }
 
@@ -140,5 +148,19 @@ public class Principal {
         System.out.println(lectura);
         lectura.cerrarArchivo();
     }
-
+    
+    public static void verificarJugador(){
+        
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Ingresa el nombre del jugador a buscar: ");
+        String nombre = sc.nextLine();
+        
+        String nombreArchivoClub = "data/jugadores.dat";
+        LecturaSecuencialJugador lectura
+                = new LecturaSecuencialJugador(nombreArchivoClub);
+        lectura.establecerRegistroBuscado(nombre);
+        Jugador c = lectura.obtenerRegistroBuscado();
+        System.out.print(lectura.obtenerRegistroBuscado());
+    }
 }
